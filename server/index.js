@@ -135,6 +135,7 @@ import { checkLoginRateLimit, clearLoginRateLimit, getClientIp } from './rateLim
 import { syncLayoutPresetsForTableColumnChanges } from './tableTemplateColumnSync.js'
 import { registerCertificateRoutes } from './routes/certificates.js'
 import { registerPublicRoutes } from './routes/public.js'
+import { registerTrackingRoutes } from './visitorTracking.js'
 
 const PORT = Number(process.env.PORT || 3001)
 const JWT_SECRET = process.env.JWT_SECRET || 'dev-change-me-in-production'
@@ -1249,6 +1250,7 @@ registerDashboardRoutes(app, { db, projectRoot, requireAuth })
 registerAccountRoutes(app, { db, projectRoot, requireAuth })
 registerPublicAccountRoutes(app, { db, projectRoot, requireVisitorAuth })
 registerAdminManageRoutes(app, { db, secret: JWT_SECRET, requireAuth, requireAccessModule: requireModuleAccess })
+registerTrackingRoutes(app, { db, JWT_SECRET, requireAuth })
 
 app.use(
   '/font/*',

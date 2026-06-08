@@ -14115,3 +14115,235 @@ body.layout-collapsible-reorder-active * {
 .tbl-tpl-editor-meta {
   flex-shrink: 0;
 }
+
+/* ================================================================
+   访客分析面板
+   ================================================================ */
+.visitor-analytics-panel {
+  padding: 24px 28px;
+  max-width: 1200px;
+  margin: 0 auto;
+  overflow-y: auto;
+}
+.va-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+.va-header h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+}
+.va-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.va-select {
+  padding: 6px 10px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 13px;
+  background: #fff;
+}
+
+/* 摘要卡片 */
+.va-summary-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 16px;
+  margin-bottom: 28px;
+}
+.va-card {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 20px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+}
+.va-card-value {
+  font-size: 28px;
+  font-weight: 700;
+  color: #111827;
+  letter-spacing: -0.02em;
+}
+.va-card-label {
+  font-size: 13px;
+  color: #6b7280;
+}
+.va-card--loading .va-card-value {
+  color: #9ca3af;
+}
+
+/* 图表区 */
+.va-section {
+  margin-bottom: 24px;
+}
+.va-section-title {
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0 0 14px 0;
+  color: #374151;
+}
+.va-chart-legend {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  margin-bottom: 12px;
+  font-size: 12px;
+  color: #6b7280;
+}
+.va-legend-dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+  margin-right: 4px;
+}
+.va-legend-dot--pv { background: #6366f1; }
+.va-legend-dot--dl { background: #f59e0b; }
+
+.va-chart-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 180px;
+  padding: 4px 0;
+  background: #f9fafb;
+  border-radius: 10px;
+  border: 1px solid #e5e7eb;
+  overflow-x: auto;
+}
+.va-chart-col {
+  flex: 1;
+  min-width: 14px;
+  max-width: 48px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 4px;
+}
+.va-chart-bar-stack {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 1px;
+}
+.va-chart-bar {
+  width: 100%;
+  min-height: 2px;
+  border-radius: 2px 2px 0 0;
+  transition: height 0.2s;
+}
+.va-chart-bar--pv { background: #6366f1; }
+.va-chart-bar--dl { background: #f59e0b; }
+.va-chart-label {
+  font-size: 9px;
+  color: #9ca3af;
+  white-space: nowrap;
+  transform: rotate(-30deg);
+  transform-origin: top left;
+  margin-top: 4px;
+}
+
+/* 表格 */
+.va-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+@media (max-width: 860px) {
+  .va-grid { grid-template-columns: 1fr; }
+}
+.va-table-wrap {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  overflow: auto;
+  max-height: 480px;
+}
+.va-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.va-table th {
+  position: sticky;
+  top: 0;
+  background: #f9fafb;
+  padding: 10px 12px;
+  text-align: left;
+  font-weight: 600;
+  color: #6b7280;
+  font-size: 12px;
+  border-bottom: 1px solid #e5e7eb;
+}
+.va-table td {
+  padding: 9px 12px;
+  border-bottom: 1px solid #f3f4f6;
+  color: #374151;
+}
+.va-cell-rank {
+  width: 36px;
+  color: #9ca3af;
+  font-weight: 500;
+  text-align: center;
+}
+.va-cell-num {
+  width: 64px;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+.va-cell-time {
+  width: 130px;
+  white-space: nowrap;
+  color: #6b7280;
+  font-size: 12px;
+}
+.va-cell-title {
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.va-cell-ip {
+  font-size: 12px;
+  color: #9ca3af;
+  font-family: monospace;
+}
+
+/* 活动徽章 */
+.va-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+.va-badge--view { background: #eef2ff; color: #4f46e5; }
+.va-badge--download { background: #fef3c7; color: #b45309; }
+.va-badge--login { background: #ecfdf5; color: #047857; }
+
+.va-empty {
+  text-align: center;
+  color: #9ca3af;
+  padding: 32px 16px;
+  margin: 0;
+  font-size: 13px;
+}
+.va-error {
+  color: #ef4444;
+  padding: 16px;
+  margin: 0;
+  font-size: 13px;
+}

@@ -1658,6 +1658,7 @@ function applyCertificateState(certificate, renderFields) {
     ...certificate,
     merged_layout_overrides: renderFields.mergedLayout,
   }
+  setTrackingCert(currentCert)
   presetBundles = certificate.preset_bundles
     || certificate.preview_ui?.public_snapshot?.preset_bundles
     || {}
@@ -2374,6 +2375,7 @@ btnExportSvg?.addEventListener('click', async () => {
     const blob = new Blob([await serializeSvgForExport(svgEl)], { type: 'image/svg+xml;charset=utf-8' })
     downloadBlob(blob, `${sanitizeFilename(name)}.svg`)
     setExportStatus('SVG 已导出')
+    trackActivity('svg_download')
   } catch (err) {
     console.error(err)
     setExportStatus('SVG 导出失败: ' + (err.message || '未知错误'))
@@ -2390,6 +2392,7 @@ btnExportPdf?.addEventListener('click', async () => {
     const name = rows[selectedRow]['编号'] || `cert-${selectedRow + 1}`
     await exportSvgToPdf(svgEl, `${sanitizeFilename(name)}.pdf`, pdfExportOptionsFromApp())
     setExportStatus('PDF 已导出')
+    trackActivity('pdf_download')
   } catch (err) {
     console.error(err)
     setExportStatus('PDF 导出失败: ' + (err.message || '未知错误'))
@@ -2475,4 +2478,72 @@ function formatTime(iso) {
     return ''
   }
 }
+
+// ---- 访客行为追踪 ----
+let trackPageEnteredAt = Date.now()
+let trackCertId = null
+let trackCertTitle = ''
+
+function trackActivity(activityType, opts = {}) {
+  const payload = {
+    activity_type: activityType,
+    cert_id: trackCertId ?? (opts.cert_id ?? null),
+    cert_title: trackCertTitle || (opts.cert_title || ''),
+    duration_seconds: opts.duration_seconds ?? 0,
+    referrer: document.referrer || '',
+    details: opts.details ? JSON.stringify(opts.details) : '{}',
+  }
+  // 卸载时用 sendBeacon 确保送达
+  if (opts.beacon && navigator.sendBeacon) {
+    const blob = new Blob([JSON.stringify(payload)], { type: 'application/json' })
+    navigator.sendBeacon('/api/track', blob)
+    return
+  }
+  fetch('/api/track', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+    keepalive: true,
+  }).catch(() => { /* 追踪失败不影响主功能 */ })
+}
+
+// 记录一次公开页访问（即使未点开证书也有数据）
+function trackPageVisit() {
+  fetch('/api/track', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      activity_type: 'page_visit',
+      cert_id: null,
+      cert_title: '',
+      duration_seconds: 0,
+      referrer: document.referrer || '',
+      details: JSON.stringify({ path: window.location.pathname }),
+    }),
+    keepalive: true,
+  }).catch(() => {})
+}
+trackPageVisit()
+
+function setTrackingCert(cert) {
+  trackCertId = cert?.id ?? null
+  trackCertTitle = cert?.title || ''
+  trackPageEnteredAt = Date.now()
+  if (trackCertId) {
+    trackActivity('page_view')
+  }
+}
+
+function trackDuration() {
+  if (!trackCertId) return
+  const sec = Math.round((Date.now() - trackPageEnteredAt) / 1000)
+  if (sec < 1) return
+  trackActivity('page_view', { duration_seconds: sec, beacon: true })
+}
+
+// 页面关闭/隐藏时上报停留时长
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'hidden') trackDuration()
+})
+window.addEventListener('beforeunload', () => trackDuration())
 

@@ -221,6 +221,29 @@ function runMigrations(db) {
     ensureColumn(db, 'site_branding_by_group', 'public_cert_url_style', "TEXT NOT NULL DEFAULT 'query'")
   })
 
+  // v8: 访客行为追踪
+  applyMigration(db, 8, (db) => {
+    db.exec(`
+      CREATE TABLE IF NOT EXISTS visitor_activity_log (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        visitor_id INTEGER,
+        visitor_name TEXT NOT NULL DEFAULT '',
+        activity_type TEXT NOT NULL,
+        cert_id INTEGER,
+        cert_title TEXT NOT NULL DEFAULT '',
+        ip_address TEXT NOT NULL DEFAULT '',
+        user_agent TEXT NOT NULL DEFAULT '',
+        referrer TEXT NOT NULL DEFAULT '',
+        duration_seconds REAL NOT NULL DEFAULT 0,
+        details TEXT NOT NULL DEFAULT '{}',
+        created_at TEXT NOT NULL
+      );
+      CREATE INDEX IF NOT EXISTS idx_activity_visitor ON visitor_activity_log(visitor_id);
+      CREATE INDEX IF NOT EXISTS idx_activity_type ON visitor_activity_log(activity_type);
+      CREATE INDEX IF NOT EXISTS idx_activity_time ON visitor_activity_log(created_at);
+    `)
+  })
+
   // 向后兼容：如果数据库已有这些表但没有 migrations 记录，
   // 检测并把所有版本标记为已应用（避免对已有数据库重复执行）
   backfillMigrationVersions(db)
@@ -244,10 +267,10 @@ function backfillMigrationVersions(db) {
   // 数据库已存在，标记所有版本为已应用
   const now = new Date().toISOString()
   const stmt = db.prepare('INSERT OR IGNORE INTO migrations (version, applied_at) VALUES (?, ?)')
-  for (let v = 1; v <= 7; v++) {
+  for (let v = 1; v <= 8; v++) {
     stmt.run(v, now)
   }
-  console.log('[DB] 检测到已有数据库，已回填迁移版本 v1-v7')
+  console.log('[DB] 检测到已有数据库，已回填迁移版本 v1-v8')
 }
 
 /** 首次添加 sort_order 时，按旧列表规则（默认优先、更新时间）写入顺序 */

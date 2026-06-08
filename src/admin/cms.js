@@ -499,6 +499,7 @@ export function mountCmsBar(root, options) {
               <button type="button" class="wp-nav-link" data-view="fonts" data-module="fonts" data-collapse-icon="🔤">字体源</button>
               <button type="button" class="wp-nav-link" data-view="maintenance" data-module="maintenance" data-collapse-icon="🗄️">数据维护</button>
               <button type="button" class="wp-nav-link" data-view="access" data-module="access" data-collapse-icon="🔐">权限管理</button>
+              <button type="button" class="wp-nav-link" data-view="analytics" data-collapse-icon="📈">访客分析</button>
             </div>
 
             <div class="wp-nav-section">
@@ -670,6 +671,10 @@ export function mountCmsBar(root, options) {
             <section class="wp-view-page" id="cms-view-access" data-view="access" aria-label="权限管理">
               <div class="wp-settings-host" id="cms-panel-access"></div>
             </section>
+
+            <section class="wp-view-page" id="cms-view-analytics" data-view="analytics" aria-label="访客分析">
+              <div class="wp-settings-host" id="cms-panel-analytics"></div>
+            </section>
           </div>
         </div>
       </div>
@@ -749,6 +754,7 @@ export function mountCmsBar(root, options) {
     fonts: root.querySelector('#cms-view-fonts'),
     maintenance: root.querySelector('#cms-view-maintenance'),
     access: root.querySelector('#cms-view-access'),
+    analytics: root.querySelector('#cms-view-analytics'),
   }
   const revisionsDialog = root.querySelector('#cms-revisions-dialog')
   const presetSwitchDialog = root.querySelector('#cms-preset-switch-dialog')
@@ -770,6 +776,9 @@ export function mountCmsBar(root, options) {
   const panelOverview = root.querySelector('#cms-panel-overview')
   const panelMaintenance = root.querySelector('#cms-panel-maintenance')
   const panelAccess = root.querySelector('#cms-panel-access')
+  const panelAnalytics = root.querySelector('#cms-panel-analytics')
+
+  let analyticsPanel = null
 
   async function openPublicSlugDialog() {
     if (!publicSlugDialog || !publicSlugInput || !publicSlugPrefixEl) return
@@ -979,6 +988,13 @@ export function mountCmsBar(root, options) {
         maintenancePanel.switchTab('backup')
       }
     }
+    if (view === 'analytics') {
+      if (!analyticsPanel) {
+        const { mountVisitorAnalyticsPanel } = await import('./visitorAnalytics.js')
+        analyticsPanel = { mount: mountVisitorAnalyticsPanel }
+      }
+      await analyticsPanel.mount(panelAnalytics)
+    }
   }
 
   /** 需在 wp-settings-host 中懒加载的面板视图 */
@@ -991,6 +1007,7 @@ export function mountCmsBar(root, options) {
     'site',
     'access',
     'maintenance',
+    'analytics',
   ])
 
   function resolveViewFromLocation() {
@@ -1033,7 +1050,7 @@ export function mountCmsBar(root, options) {
 
   async function showView(view, { skipDirtyCheck = false, history: historyMode = 'push' } = {}) {
     if (view === 'block-templates') view = 'layout-presets'
-    const allowedViews = ['overview', 'list', 'edit', 'site', 'templates', 'table-templates', 'layout-presets', 'fonts', 'maintenance', 'access']
+    const allowedViews = ['overview', 'list', 'edit', 'site', 'templates', 'table-templates', 'layout-presets', 'fonts', 'maintenance', 'access', 'analytics']
     if (!allowedViews.includes(view)) {
       view = 'overview'
     }
