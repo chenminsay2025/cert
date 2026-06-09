@@ -41,9 +41,9 @@ npm run dev:local   # Windows 推荐；其它系统可用 npm run dev
 ### 方式 A：网页安装（推荐）
 
 1. 宝塔添加网站，上传项目 zip 到网站目录并解压  
-2. PM2 添加 Node 项目：启动文件 `server/index.js`，端口 `3001`  
+2. PM2 添加 Node 项目：启动文件 `server/index.js`，端口 `3003`  
 3. 浏览器打开 `https://你的域名/install.html`，填写网址和管理员密码，点击安装  
-4. 安装完成后 **重启 PM2**，Nginx 反代到 `127.0.0.1:3001`  
+4. 安装完成后 **重启 PM2**，Nginx 反代到 `127.0.0.1:3003`  
 
 ### 方式 B：命令行
 

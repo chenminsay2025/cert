@@ -72,7 +72,7 @@ export default defineConfig({
       configureServer(server) {
         const warnStaleApi = async () => {
           try {
-            const res = await fetch('http://127.0.0.1:3001/api/meta', {
+            const res = await fetch('http://127.0.0.1:3003/api/meta', {
               signal: AbortSignal.timeout(2000),
             })
             if (!res.ok) return
@@ -89,11 +89,11 @@ export default defineConfig({
               || !data.features?.includes('backup_progress')
             ) {
               server.config.logger.warn(
-                '[CAT] 3001 为旧版 API（缺少备份进度等接口）。请 Ctrl+C 后执行 npm run dev:local（会自动结束旧进程）',
+                '[CAT] 3003 为旧版 API（缺少备份进度等接口）。请 Ctrl+C 后执行 npm run dev:local（会自动结束旧进程）',
               )
             }
             try {
-              const profileRes = await fetch('http://127.0.0.1:3001/api/auth/profile', {
+              const profileRes = await fetch('http://127.0.0.1:3003/api/auth/profile', {
                 signal: AbortSignal.timeout(1500),
               })
               if (profileRes.status === 404) {
@@ -106,7 +106,7 @@ export default defineConfig({
             }
           } catch {
             server.config.logger.warn(
-              '[CAT] 未连接后端 :3001，请先 npm run dev:local（同时启动 API 与 Vite）',
+              '[CAT] 未连接后端 :3003，请先 npm run dev:local（同时启动 API 与 Vite）',
             )
           }
         }
@@ -119,7 +119,7 @@ export default defineConfig({
           const now = Date.now()
           if (!force && now - adminLoginSlugFetchedAt < 5000) return
           try {
-            const res = await fetch('http://127.0.0.1:3001/api/meta', {
+            const res = await fetch('http://127.0.0.1:3003/api/meta', {
               signal: AbortSignal.timeout(2000),
             })
             if (!res.ok) return
@@ -273,19 +273,19 @@ export default defineConfig({
     open: '/',
     proxy: {
       '/api': {
-        target: 'http://localhost:3001',
+        target: 'http://localhost:3003',
         changeOrigin: true,
       },
       '/uploads': {
-        target: 'http://localhost:3001',
+        target: 'http://localhost:3003',
         changeOrigin: true,
       },
       '/svg-templates': {
-        target: 'http://localhost:3001',
+        target: 'http://localhost:3003',
         changeOrigin: true,
       },
       '/font': {
-        target: 'http://localhost:3001',
+        target: 'http://localhost:3003',
         changeOrigin: true,
       },
     },

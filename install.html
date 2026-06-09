@@ -104,8 +104,8 @@
           <input type="password" id="admin-pass" minlength="6" autocomplete="new-password" required />
         </label>
         <label>
-          Node 端口（一般保持 3001）
-          <input type="number" id="port" value="3001" min="1024" max="65535" />
+          Node 端口（一般保持 3003）
+          <input type="number" id="port" value="3003" min="1024" max="65535" />
         </label>
         <button type="submit" class="btn" id="btn-install">开始安装</button>
         <p class="error" id="error"></p>
@@ -174,7 +174,7 @@
               siteUrl: document.getElementById('site-url').value.trim(),
               adminUsername: document.getElementById('admin-user').value.trim(),
               adminPassword: document.getElementById('admin-pass').value,
-              port: Number(document.getElementById('port').value) || 3001,
+              port: Number(document.getElementById('port').value) || 3003,
             }),
           })
           const data = await res.json()

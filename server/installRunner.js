@@ -52,7 +52,7 @@ export function writeEnvFile({
   siteUrl,
   adminUsername,
   adminPassword,
-  port = 3001,
+  port = 3003,
   jwtSecret = generateJwtSecret(),
 }) {
   const lines = [
@@ -198,7 +198,7 @@ Node 端口：${port}（仅本机，勿对外开放）
 `.trim(), 'utf8')
 }
 
-export async function runInstall({ db, siteUrl, adminUsername, adminPassword, port = 3001 }) {
+export async function runInstall({ db, siteUrl, adminUsername, adminPassword, port = 3003 }) {
   if (installProgress.running) {
     throw new Error('安装正在进行中')
   }

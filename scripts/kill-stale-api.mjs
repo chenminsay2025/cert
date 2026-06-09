@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 /**
- * 开发启动前：若 3001 上是旧版 API（无 media_upload），结束占用端口的进程，
+ * 开发启动前：若 3003 上是旧版 API（无 media_upload），结束占用端口的进程，
  * 以便 concurrently 能拉起带图片上传的新 server/index.js。
  */
 import { execSync } from 'node:child_process'
 
-const PORT = Number(process.env.API_PORT || 3001)
+const PORT = Number(process.env.API_PORT || 3003)
 const META = `http://127.0.0.1:${PORT}/api/meta`
 const PROFILE = `http://127.0.0.1:${PORT}/api/auth/profile`
 

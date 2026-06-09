@@ -324,7 +324,7 @@ export function mountTableTemplatesPanel(container, options = {}) {
     try {
       meta = await api.meta()
     } catch {
-      throw new Error('无法连接后端 (端口 3001)。请执行 npm run dev:local 并刷新页面')
+      throw new Error('无法连接后端 (端口 3003)。请执行 npm run dev:local 并刷新页面')
     }
     if (!Array.isArray(meta?.features)) {
       throw new Error('后端 API 响应异常。请确认 npm run dev:local 已启动，然后硬刷新页面 (Ctrl+Shift+R)')

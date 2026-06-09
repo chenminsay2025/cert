@@ -30,7 +30,7 @@ export function registerInstallRoutes(app, { db }) {
         siteUrl: body.siteUrl,
         adminUsername: body.adminUsername,
         adminPassword: body.adminPassword,
-        port: Number(body.port) || 3001,
+        port: Number(body.port) || 3003,
       })
       return c.json({
         ok: true,

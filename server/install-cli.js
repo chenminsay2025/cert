@@ -24,12 +24,12 @@ async function promptDefaults(args) {
     const siteUrl = args.url || args.siteUrl || await rl.question('网站地址（如 https://cat.meituyin.cn）: ')
     const adminUsername = args.user || args.admin || await rl.question('管理员用户名 [admin]: ') || 'admin'
     const adminPassword = args.password || args.pass || await rl.question('管理员密码（至少6位）: ')
-    const portStr = args.port || await rl.question('Node 端口 [3001]: ') || '3001'
+    const portStr = args.port || await rl.question('Node 端口 [3003]: ') || '3003'
     return {
       siteUrl,
       adminUsername,
       adminPassword,
-      port: Number(portStr) || 3001,
+      port: Number(portStr) || 3003,
     }
   } finally {
     rl.close()

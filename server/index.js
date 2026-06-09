@@ -137,7 +137,7 @@ import { registerCertificateRoutes } from './routes/certificates.js'
 import { registerPublicRoutes } from './routes/public.js'
 import { registerTrackingRoutes } from './visitorTracking.js'
 
-const PORT = Number(process.env.PORT || 3001)
+const PORT = Number(process.env.PORT || 3003)
 const JWT_SECRET = process.env.JWT_SECRET || 'dev-change-me-in-production'
 const ADMIN_USERNAME = process.env.ADMIN_USERNAME || 'admin'
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'admin123'

@@ -33,29 +33,29 @@ async function request(path, options = {}) {
       msg = data.error
     }
     if (res.status === 502 || res.status === 503) {
-      msg = '无法连接后端 (端口 3001)，请先 npm run dev:local 或 node server/index.js'
+      msg = '无法连接后端 (端口 3003)，请先 npm run dev:local 或 node server/index.js'
     }
     if (res.status === 404 && path.startsWith('/api/templates')) {
       msg = '模板接口不存在 (404)。请停止旧的后端进程后重新运行 npm run dev:server 或 npm start'
     }
     if (res.status === 404 && path.includes('/api/settings/fonts')) {
       msg =
-        '字体设置接口 404：3001 端口可能是旧进程。本地请 netstat/taskkill 释放 3001 后执行 npm run dev:local；服务器请更新 server/ 并 pm2 restart cat。可运行 npm run check:api 自检'
+        '字体设置接口 404：3003 端口可能是旧进程。本地请 netstat/taskkill 释放 3003 后执行 npm run dev:local；服务器请更新 server/ 并 pm2 restart cat。可运行 npm run check:api 自检'
     }
     if (res.status === 404 && path.includes('/api/media/upload')) {
       msg =
-        '图片上传接口 404：3001 端口可能是旧版后端。请停止当前 dev 后重新运行 npm run dev:local（会自动结束旧进程），或执行 node scripts/kill-stale-api.mjs 后 npm run dev:server'
+        '图片上传接口 404：3003 端口可能是旧版后端。请停止当前 dev 后重新运行 npm run dev:local（会自动结束旧进程），或执行 node scripts/kill-stale-api.mjs 后 npm run dev:server'
     }
     if (res.status === 404 && path.includes('/api/presets/') && path.endsWith('/group')) {
-      msg = '布局模板所属组接口 404：3001 端口可能是旧进程。请 Ctrl+C 后执行 npm run dev:local（或 node scripts/kill-stale-api.mjs 后 npm run dev:server）'
+      msg = '布局模板所属组接口 404：3003 端口可能是旧进程。请 Ctrl+C 后执行 npm run dev:local（或 node scripts/kill-stale-api.mjs 后 npm run dev:server）'
     }
     if (res.status === 404 && path.includes('/api/maintenance/auto-backup')) {
       msg =
-        '自动备份接口 404：3001 端口可能是旧版后端。请 Ctrl+C 后执行 npm run dev:local，或 node scripts/kill-stale-api.mjs 后 npm run dev:server'
+        '自动备份接口 404：3003 端口可能是旧版后端。请 Ctrl+C 后执行 npm run dev:local，或 node scripts/kill-stale-api.mjs 后 npm run dev:server'
     }
     if (res.status === 404 && path.includes('/api/auth/profile')) {
       msg =
-        '账户中心接口 404：3001 端口可能是旧版后端。请 Ctrl+C 后执行 npm run dev:local，或 node scripts/kill-stale-api.mjs 后 npm run dev:server'
+        '账户中心接口 404：3003 端口可能是旧版后端。请 Ctrl+C 后执行 npm run dev:local，或 node scripts/kill-stale-api.mjs 后 npm run dev:server'
     }
     if (res.status === 404 && path.includes('/api/settings/fonts/upload')) {
       msg =

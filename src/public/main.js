@@ -1473,7 +1473,7 @@ async function ensurePublicRenderFields(id, certificate) {
     warnPublicAdorn('render-snapshot-failed', {
       preset_id: certificate.preset_id,
       error: err?.message || String(err),
-      hint: '3001 端口可能是旧版 API。请 Ctrl+C 后重新运行 npm run dev:local',
+      hint: '3003 端口可能是旧版 API。请 Ctrl+C 后重新运行 npm run dev:local',
     })
   }
 

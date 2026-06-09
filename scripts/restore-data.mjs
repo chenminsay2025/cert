@@ -29,7 +29,7 @@ function resolveBackupArg() {
 }
 
 function killApiPort() {
-  const port = Number(process.env.API_PORT || 3001)
+  const port = Number(process.env.API_PORT || 3003)
   if (process.platform !== 'win32') {
     try {
       execSync(`lsof -ti :${port} | xargs -r kill -9`, { stdio: 'ignore', shell: true })
